@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Main</title>
+  </head>
+  <body>
+    <table width=80%>
+      <hr><td>Name</td><td>Distance miles/km</td><td>Time</td></hr>
+      {% for i in data %}
+      <tr>
+	<td><a href="{{ i['hlink'] }}">{{ i['name'] }}</a></td>
+	<td>{{ i['miles']}}miles / {{ i['kms'] }}km</td>
+	<td>{{ i['hour'] }}h {{ i['min'] }}m {{ i['sec'] }}s</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>

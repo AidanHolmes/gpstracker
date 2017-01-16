@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <!-- This stylesheet contains specific styles for displaying the map
+         on this page. Replace it with your own styles as described in the
+         documentation:
+         https://developers.google.com/maps/documentation/javascript/tutorial -->
+  </head>
+  <body>
+    <table>
+      {% for i in data %}
+      <tr><td>{{ i['longitude'] }} {{ i['latitude'] }}</td></tr>
+      {% endfor %}
+    </table>
+  </body>
+  </html>
