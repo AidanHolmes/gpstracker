@@ -26,11 +26,11 @@ class trackerapp(object):
 
     def __init__(self):
         self.tracker_screens = Screens()
-        self.runbtn = IndicatorButton(13,19)
+        self.runbtn = IndicatorButton(appconfig['gpio_run_pin'],appconfig['gpio_run_indicator'])
         self.runbtn.rise_fn = self.run_btn_up
         self.runbtn.fall_fn = self.run_btn_dn
 
-        self.pwrbtn = IndicatorButton(4,5)
+        self.pwrbtn = IndicatorButton(appconfig['gpio_pwr_pin'],appconfig['gpio_pwr_indicator'])
         self.pwrbtn.rise_fn = self.pwr_btn_up
         self.pwrbtn.fall_fn = self.pwr_btn_dn
 

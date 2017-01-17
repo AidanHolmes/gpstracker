@@ -11,8 +11,11 @@ appconfig = {
     'battsensor' : 0x36,
     'tempsensor' : 0x48,
     'images' : '/home/pi/tracker/gpstracker/res/',
-    'metric' : False
-    
+    'metric' : False,
+    'gpio_run_pin' : 13,
+    'gpio_run_indicator' : 19,
+    'gpio_pwr_pin' : 4,
+    'gpio_pwr_indicator' : 5
 }
 
 
