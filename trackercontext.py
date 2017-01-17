@@ -1,3 +1,17 @@
+# Copyright 2017 Aidan Holmes
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+# http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 from trackerdisplay import *
 from trackergps import TrackerGPS
 from PIL import Image
@@ -7,9 +21,7 @@ import smbus
 import time
 import subprocess
 from datetime import datetime
-
-BATT_SENSOR_ADDRESS = 0x36
-TEMP_SENSOR_ADDRESS = 0x48
+from config import appconfig
 
 class GPS1SubScreen(BasicScreen):
       def __init__(self):
@@ -88,13 +100,13 @@ class GPS3SubScreen(GPS1SubScreen):
             
 class StatusContainer(ScreenDisplay):
       def loadresources(self):
-            self.battlow = Image.open('/home/pi/tracker/gpstracker/res/battlow.png').convert(mode='1')
-            self.batt100 = Image.open('/home/pi/tracker/gpstracker/res/batt100.png').convert(mode='1')
-            self.batt75 = Image.open('/home/pi/tracker/gpstracker/res/batt75.png').convert(mode='1')
-            self.batt50 = Image.open('/home/pi/tracker/gpstracker/res/batt50.png').convert(mode='1')
-            self.batt25 = Image.open('/home/pi/tracker/gpstracker/res/batt25.png').convert(mode='1')
-            self.gpsimg = Image.open('/home/pi/tracker/gpstracker/res/satellite.png').convert(mode='1')
-            self.trackingimg = Image.open('/home/pi/tracker/gpstracker/res/gpstracking.png').convert(mode='1')
+            self.battlow = Image.open(appconfig['images'] + 'battlow.png').convert(mode='1')
+            self.batt100 = Image.open(appconfig['images'] + 'batt100.png').convert(mode='1')
+            self.batt75 = Image.open(appconfig['images'] + 'batt75.png').convert(mode='1')
+            self.batt50 = Image.open(appconfig['images'] + 'batt50.png').convert(mode='1')
+            self.batt25 = Image.open(appconfig['images'] + 'batt25.png').convert(mode='1')
+            self.gpsimg = Image.open(appconfig['images'] + 'satellite.png').convert(mode='1')
+            self.trackingimg = Image.open(appconfig['images'] + 'gpstracking.png').convert(mode='1')
 
       def __init__(self):
             ScreenDisplay.__init__(self)
@@ -161,7 +173,7 @@ class StatusContainer(ScreenDisplay):
             # May return > 100
             raw_val = 0
             try:
-                  raw_val = self.bus.read_byte_data(BATT_SENSOR_ADDRESS,0x04)
+                  raw_val = self.bus.read_byte_data(appconfig['battsensor'],0x04)
             except IOError:
                   print "IO Error received reading battery"
                   return 0
@@ -207,7 +219,7 @@ class Lowpowersub(BasicScreen):
             BasicScreen.__init__(self)
             self.fontsize = 20
             self.indent = 10
-            self.pwrimg = Image.open('/home/pi/tracker/gpstracker/res/pwrsave.png').convert(mode='1')
+            self.pwrimg = Image.open(appconfig['images'] + 'pwrsave.png').convert(mode='1')
 
       def draw(self):
             line = 0
@@ -229,7 +241,7 @@ class Lowpower(StatusContainer):
             self.bus = None
             self.prev_pwrbtn = True
             self.prev_runbtn = False
-            self.pwrimg = Image.open('/home/pi/tracker/gpstracker/res/pwrsave.png').convert(mode='1')
+            self.pwrimg = Image.open(appconfig['images'] + 'pwrsave.png').convert(mode='1')
             self.sub1 = Lowpowersub()
             self.subscreens.registerScreen(self.sub1)
 
@@ -320,7 +332,7 @@ class TrackerDiag(ScreenDisplay):
       @property
       def battpercent(self):
             try:
-                  raw_val = self.bus.read_byte_data(BATT_SENSOR_ADDRESS,0x04)
+                  raw_val = self.bus.read_byte_data(appconfig['battsensor'],0x04)
             except IOError:
                   print "IO Error received reading battery"
                   return 0
@@ -332,8 +344,8 @@ class TrackerDiag(ScreenDisplay):
             high_val = 0
             low_val = 0
             try:
-                  high_val = self.bus.read_byte_data(BATT_SENSOR_ADDRESS,0x02)
-                  low_val = self.bus.read_byte_data(BATT_SENSOR_ADDRESS,0x03)
+                  high_val = self.bus.read_byte_data(appconfig['battsensor'],0x02)
+                  low_val = self.bus.read_byte_data(appconfig['battsensor'],0x03)
             except IOError:
                   print ("IO Error received reading battery")
                   return 0
@@ -345,7 +357,7 @@ class TrackerDiag(ScreenDisplay):
       def temperature(self):
             raw_temp = 0
             try:
-                  raw_temp = self.bus.read_word_data(TEMP_SENSOR_ADDRESS,0x00)
+                  raw_temp = self.bus.read_word_data(appconfig['tempsensor'],0x00)
             except IOError:
                   print ("IO Error received reading temperature")
                   return 0

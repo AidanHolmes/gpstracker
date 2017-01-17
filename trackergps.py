@@ -1,3 +1,17 @@
+# Copyright 2017 Aidan Holmes
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+# http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import gps
 import dateutil.parser
 import time
@@ -5,6 +19,7 @@ import json
 from datetime import datetime
 from threading import Thread, Lock
 from math import sqrt, pi, sin, cos, tan, atan2, radians, asin, floor, ceil
+from config import appconfig
 
 kmtomiles = 0.621371
 
@@ -12,7 +27,7 @@ class GPSSummary(object):
     'Provides a summary record for a GPS log file'
 
     def __init__(self):
-        self.dbg = False
+        self.dbg = appconfig['debug']
         self.reset()
         
     def reset(self):
@@ -188,9 +203,6 @@ class GPSSummary(object):
         
 class TrackerGPS(Thread):
     'GPS wrapper class with worker thread to read GPS buffer'
-
-    LOGDIR = '/home/pi/tracker'
-    PREFIX = 'gpslog'
     
     def __init__(self):
         Thread.__init__(self)
@@ -203,8 +215,8 @@ class TrackerGPS(Thread):
         self.__references = 0 # Track numbers using this object
         self.__quit = False
         self.__firstrun = True
-        self.logdir = self.LOGDIR
-        self.logfilename = self.PREFIX
+        self.logdir = appconfig['logdir']
+        self.logfilename = appconfig['prefix']
         self.loghandle = None
         self.lastlogwrite = 0
         self.logperiod = 20 # seconds

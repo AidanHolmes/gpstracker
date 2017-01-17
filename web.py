@@ -1,7 +1,22 @@
+# Copyright 2017 Aidan Holmes
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+# http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 from flask import Flask, render_template, request, url_for
 import trackergps as gps
 from summarydisplay import hms
 import os
+from config import webconfig
 
 app = Flask(__name__)
 
@@ -86,7 +101,7 @@ def showroute(name):
         for log in s.log_items:
             bounds = update_bounds(bounds, log)
 
-    return render_template('route.html', data=sessions, bounds=bounds)
+    return render_template('route.html', data=sessions, bounds=bounds, key = webconfig['googlekey'])
     
 @app.route('/log/')
 @app.route('/log/<name>')
@@ -122,8 +137,8 @@ def showlog(name = None):
 
     f.close()
 
-    return render_template('map.html', data=gpspoints, bounds=bounds)
+    return render_template('map.html', data=gpspoints, bounds=bounds,, key = webconfig['googlekey'])
 
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', 80, debug=True)
+    app.run(webconfig['interface'], webconfig['port'], debug=True)

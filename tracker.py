@@ -1,3 +1,17 @@
+# Copyright 2017 Aidan Holmes
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+# http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 from trackerdisplay import Screens
 from trackercontext import *
 from summarydisplay import SummaryScreen
@@ -6,6 +20,7 @@ import smbus
 import time
 from trackergps import TrackerGPS
 import subprocess
+from config import appconfig
 
 class trackerapp(object):
 
@@ -69,7 +84,7 @@ class trackerapp(object):
             activity_screen = SummaryScreen()
             activity_screen.name = 'Activity'
             activity_screen.bus = data_bus
-            activity_screen.metric_units(False)
+            activity_screen.metric_units(appconfig['metric'])
             activity_screen.set_gps(self.gps)
             
             default_screen = TrackerMain()
