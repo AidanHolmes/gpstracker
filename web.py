@@ -137,7 +137,7 @@ def showlog(name = None):
 
     f.close()
 
-    return render_template('map.html', data=gpspoints, bounds=bounds,, key = webconfig['googlekey'])
+    return render_template('map.html', data=gpspoints, bounds=bounds, key = webconfig['googlekey'])
 
 
 if __name__ == '__main__':
