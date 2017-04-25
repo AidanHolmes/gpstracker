@@ -269,11 +269,17 @@ class Shutdown(ScreenDisplay):
       'Shutdown screen'
       def __init__(self):
             ScreenDisplay.__init__(self)
+            self.gps = None
+
+      def set_gps(self, gps):
+            self.gps = gps
 
       def draw(self):
             self.clearScreen(1)
             self.writeText('Power Off',0,0,20)
             self.writeText(time.strftime("%d-%b %H:%M:%S") , 0, 50, 25)
+            if self.gps is not None:
+                  self.writeText('Sessions: {0}'.format(self.gps.data.sessions_recorded),0,75,25)
             
 class TrackerDiag(ScreenDisplay):
       'Display system diagnostics'

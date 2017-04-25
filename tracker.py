@@ -106,6 +106,7 @@ class trackerapp(object):
             shutdown_screen = Shutdown()
             shutdown_screen.name = "shutdown"
             shutdown_screen.hidden = True
+            shutdown_screen.set_gps(self.gps)
 
             self.tracker_screens.registerScreen(activity_screen)
             self.tracker_screens.registerScreen(default_screen)
