@@ -98,6 +98,13 @@ class GPSSummary(object):
             # and unscientific but should exclude small distances which are due to wandering GPS coordinates
             error1 = max(info1['error_longitude'], info1['error_latitude'])
             error2 = max(info2['error_longitude'], info2['error_latitude'])
+            #if self.dbg:
+            #    print ("From ({0}, {1}) to ({2}, {3}), distance delta is {4:.3f}, error {5:.3f}".format(info1['longitude'],
+            #                                                                                            info1['latitude'],
+            #                                                                                            info2['longitude'],
+            #                                                                                            info2['latitude'],
+            #                                                                                            dis_km,
+            #                                                                                            (error1+error2)/1000))
 
             return dis_km < (((error1 + error2)/4) /1000)
         
@@ -114,13 +121,6 @@ class GPSSummary(object):
                 # Note the log entry used for this distance calculation
                 self.km += deltakm
                 self.mile += deltakm * kmtomiles
-                if self.dbg:
-                    print ("From ({0}, {1}) to ({2}, {3}), distance delta is {4:.3f}, error {5:.3f}".format(self.longlatheld['longitude'],
-                                                                                                            self.longlatheld['latitude'],
-                                                                                                            self.info['longitude'],
-                                                                                                            self.info['latitude'],
-                                                                                                            deltakm,
-                                                                                                            (error1+error2)/1000))
 
                 # Create entries in km split time list
                 while len(self.split_time_km) < self.km:
@@ -141,7 +141,7 @@ class GPSSummary(object):
                     self.split_km_hour.append(0)
                     if self.dbg: print ("Creating split km time record {0}".format(len(self.split_km_hour)))
                     
-                while len(self.split_mile_hour) < hours:
+                while len(self.split_mile_hour) <= hours:
                     self.split_mile_hour.append(0)
                     if self.dbg: print ("Creating split mile time record {0}".format(len(self.split_mile_hour)))
 
@@ -162,8 +162,7 @@ class GPSSummary(object):
 
                 self.longlatheld = self.info.copy()
             else:
-                if self.dbg: print ("Distance delta is too small {0:.3f}, error {1:.3f}".format(deltakm,
-                                                                                                (error1+error2)/1000))
+                if self.dbg: print ("Distance delta is too small {0:.3f}".format(deltakm))
                 pass
         else:
             # This is a section which is run for the first GPS entry for a session
